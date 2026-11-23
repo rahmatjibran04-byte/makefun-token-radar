@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — Pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="mark" aria-hidden="true">TR</div>
+    <div>
+      <h1>Token Radar</h1>
+      <p class="sub">Pre-token protocols, ranked by what a launch would be worth — and how to farm each one.</p>
+    </div>
+  </div>
+  <div class="chips" id="chips" aria-label="Board summary"></div>
+</header>
+
+<main>
+  <section class="controls" aria-label="Filters">
+    <div class="tabs" role="tablist" aria-label="Board view">
+      <button type="button" id="tabPre" class="tab on" role="tab" aria-selected="true">Pre-token board</button>
+      <button type="button" id="tabLive" class="tab" role="tab" aria-selected="false">Live tokens</button>
+    </div>
+    <label class="field grow">
+      <span class="lbl">Search</span>
+      <input type="search" id="q" placeholder="Name or slug, e.g. steakhouse" autocomplete="off">
+    </label>
+    <label class="field">
+      <span class="lbl">Category</span>
+      <select id="cat"><option value="">All categories</option></select>
+    </label>
+    <label class="field">
+      <span class="lbl">Chain</span>
+      <select id="chain"><option value="">All chains</option></select>
+    </label>
+    <label class="check">
+      <input type="checkbox" id="wlOnly">
+      <span>Watchlist only</span>
+    </label>
+  </section>
+
+  <p class="hint" id="countLine" aria-live="polite"></p>
+
+  <section id="boardView" aria-label="Pre-token board">
+    <section class="boardsec" id="wlSec">
+      <div class="sec-head">
+        <h2><span class="dot wl"></span>Watchlist <span class="sec-count" id="wlCount"></span></h2>
+        <p class="sec-note">TVL at or above the $50M floor, records no token. The floor, never the ceiling.</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="board" id="wlTable">
+          <thead><tr>
+            <th data-sort="rank" aria-sort="ascending">#</th>
+            <th data-sort="name">Protocol</th>
+            <th data-sort="tvl_usd">TVL</th>
+            <th data-sort="implied_value_usd">Implied value</th>
+            <th data-sort="change_7d">7d change</th>
+            <th data-sort="age_days">Age</th>
+            <th data-sort="chains">Chains</th>
+            <th>Category</th>
+          </tr></thead>
+          <tbody id="wlBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="boardsec" id="earlySec">
+      <div class="sec-head">
+        <h2><span class="dot early"></span>Early finds <span class="sec-count" id="earlyCount"></span></h2>
+        <p class="sec-note">Below the $50M floor, TVL $10M+, records no token. Seven of these outrank the bottom of the watchlist — that is the point of the radar.</p>
+      </div>
+      <div class="tbl-wrap">
+        <table class="board" id="earlyTable">
+          <thead><tr>
+            <th data-sort="rank" aria-sort="ascending">#</th>
+            <th data-sort="name">Protocol</th>
+            <th data-sort="tvl_usd">TVL</th>
+            <th data-sort="implied_value_usd">Implied value</th>
+            <th data-sort="change_7d">7d change</th>
+            <th data-sort="age_days">Age</th>
+            <th data-sort="chains">Chains</th>
+            <th>Category</th>
+          </tr></thead>
+          <tbody id="earlyBody"></tbody>
+        </table>
+      </div>
+    </section>
+    <p class="empty" id="emptyPre" hidden>No protocol matches these filters. Clear the search or widen the category / chain.</p>
+  </section>
+
+  <section id="liveView" hidden aria-label="Live-token table">
+    <div class="sec-head">
+      <h2><span class="dot live"></span>Already trading — live tokens</h2>
+      <p class="sec-note">Top 20 by market cap. Kept apart from the board on purpose: these tokens already trade, so they are the calibration anchor, not the hunt.</p>
+    </div>
+    <div class="tbl-wrap">
+      <table class="board" id="liveTable">
+        <thead><tr>
+          <th>#</th><th>Protocol</th><th>Symbol</th><th>Market cap</th><th>TVL</th><th>Mcap / TVL</th><th>Category</th>
+        </tr></thead>
+        <tbody id="liveBody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="model" id="modelPanel" aria-label="How the implied value is computed">
+    <h2>How the implied value is computed</h2>
+    <p class="model-formula" id="modelFormula"></p>
+    <div class="model-grid" id="modelGrid"></div>
+    <div class="honest">
+      <h3>Read this before farming</h3>
+      <ul>
+        <li>Every protocol on the pre-token board <strong>records no token</strong> in the snapshot — that is what the data says, not proof it has none. A protocol may still have a token its record does not carry.</li>
+        <li>The implied value is this entry&rsquo;s own claim about what a token would be worth if the protocol&rsquo;s record stayed as it is. It does not predict whether or when a token is issued.</li>
+        <li>Farm steps name a cost and a duration for each action. Nothing here is financial advice; check the protocol&rsquo;s own pages before moving funds.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <span id="footMeta"></span>
+  <span>Data: DefiLlama protocol snapshot, sealed at the snapshot date. Rendered locally, no network.</span>
+</footer>
+
+<aside class="detail" id="detail" aria-label="Protocol detail" hidden>
+  <button type="button" class="close" id="detailClose" aria-label="Close detail">&times;</button>
+  <div id="detailBody"></div>
+</aside>
+<div class="overlay" id="overlay" hidden></div>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
